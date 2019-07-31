@@ -16,7 +16,8 @@
  * -------------------------------------------------------------------------------------
  */
 
-package frc.robot;
+//todo: organize the structure of our code
+ package frc.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
