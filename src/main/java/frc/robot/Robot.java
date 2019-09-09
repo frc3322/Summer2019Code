@@ -18,14 +18,25 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.CameraServer;
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.HatchManip;
+import frc.robot.subsystems.HotMess;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Limelight.CameraMode;
 import frc.robot.subsystems.Limelight.LightMode;
+import frc.robot.subsystems.SideOuttake;
+import frc.robot.subsystems.WideIntake;
+
+import jaci.pathfinder.Pathfinder;
+import jaci.pathfinder.PathfinderFRC;
+import jaci.pathfinder.Trajectory;
+import jaci.pathfinder.followers.EncoderFollower;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -35,7 +46,7 @@ import frc.robot.subsystems.Limelight.LightMode;
  * project.
  */
 public class Robot extends TimedRobot {
-  
+
     public static SideOuttake sideouttake;
     public static HatchManip hatchManip;
     public static Drivetrain drivetrain;
@@ -45,6 +56,23 @@ public class Robot extends TimedRobot {
     public static Limelight limelight;
     public static WideIntake wideintake;
     public static Compressor compressor;
+
+    private EncoderFollower m_left_follower;
+    private EncoderFollower m_right_follower;
+  
+    private Notifier m_follower_notifier;
+
+    private static final double k_max_velocity = 12;
+
+    //TODO: temp values
+    private static final int k_ticks_per_rev = 1024;
+    private static final double k_wheel_diameter = 4.0 / 12.0;
+
+    //defines which motor is which for get_encoder method
+    private final int LEFT_BACK = 0,
+                      LEFT_FRONT = 1,
+                      RIGHT_BACK = 2,
+                      RIGHT_FRONT = 3;
 
 
     /**
@@ -134,10 +162,44 @@ public class Robot extends TimedRobot {
      * chooser code above (like the commented example) or additional comparisons
      * to the switch structure below with additional strings & commands.
      */
+
+    private void followPath() {
+        if (m_left_follower.isFinished() || m_right_follower.isFinished()) {
+            m_follower_notifier.stop();
+        } else {
+            double left_speed = m_left_follower.calculate(drivetrain.getEncoderInt(LEFT_FRONT));
+            double right_speed = m_right_follower.calculate(drivetrain.getEncoderInt(LEFT_FRONT));
+            double heading = drivetrain.getAngle();
+            double desired_heading = Pathfinder.r2d(m_left_follower.getHeading());
+            double heading_difference = Pathfinder.boundHalfDegrees(desired_heading - heading);
+            double turn =  0.8 * (-1.0/80.0) * heading_difference;
+
+            drivetrain.tankDrive(left_speed + turn, right_speed - turn);
+        }
+    }
+
     @Override
     public void autonomousInit() {
         Limelight.setCameraMode(CameraMode.eDriver);
         Limelight.setLedMode(LightMode.eOff);
+
+        //TODO: figure out how to do this
+        Trajectory left_trajectory = PathfinderFRC.getTrajectory("");
+        Trajectory right_trajectory = PathfinderFRC.getTrajectory("");
+
+        m_left_follower = new EncoderFollower(left_trajectory);
+        m_right_follower = new EncoderFollower(right_trajectory);
+
+        m_left_follower.configureEncoder(drivetrain.getEncoderInt(LEFT_FRONT), k_ticks_per_rev, k_wheel_diameter);
+        // You must tune the PID values on the following line!
+        m_left_follower.configurePIDVA(1.0, 0.0, 0.0, 1 / k_max_velocity, 0);
+
+        m_right_follower.configureEncoder(drivetrain.getEncoderInt(RIGHT_FRONT), k_ticks_per_rev, k_wheel_diameter);
+        // You must tune the PID values on the following line!
+        m_right_follower.configurePIDVA(1.0, 0.0, 0.0, 1 / k_max_velocity, 0);
+        
+        m_follower_notifier = new Notifier(this::followPath);
+        m_follower_notifier.startPeriodic(left_trajectory.get(0).dt);
     }
 
     /**

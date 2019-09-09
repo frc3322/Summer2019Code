@@ -177,7 +177,10 @@ public class Drivetrain extends Subsystem {
         //SmartDashboard.putBoolean("Is Low Gear", isClimbDown());
         SmartDashboard.putNumber("Encoder Left", getEncoder(LEFT_FRONT));
         SmartDashboard.putNumber("Encoder Right", getEncoder(RIGHT_FRONT));
+        SmartDashboard.putNumber("Encoder Left Int", getEncoderInt(LEFT_FRONT));
+        SmartDashboard.putNumber("Encoder Right Int", getEncoderInt(RIGHT_FRONT));
         SmartDashboard.putNumber("Drivetrain Angle", navx.getYaw());
+
     }
 
     public double getVoltage(int n) {
@@ -194,6 +197,12 @@ public class Drivetrain extends Subsystem {
 
     public double getEncoder(int n) {
         return encoders[n].getPosition();
+    }
+
+    public int getEncoderInt (int n){
+        long longValue = Math.round(10 * encoders[n].getPosition());
+        int intValue = (int)longValue;
+        return intValue;
     }
 
     public double getVelocity(int n) {
