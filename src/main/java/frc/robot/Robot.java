@@ -64,7 +64,6 @@ public class Robot extends TimedRobot {
 
     private static final double k_max_velocity = 12;
 
-    private static final String auton_path = "FrontRightHatch";
     //TODO: temp values
     private static final int k_ticks_per_rev = 1024;
     private static final double k_wheel_diameter = 4.0 / 12.0;
@@ -179,14 +178,23 @@ public class Robot extends TimedRobot {
         }
     }
 
+    Trajectory left_trajectory; 
+    Trajectory right_trajectory;
+
     @Override
     public void autonomousInit() {
         Limelight.setCameraMode(CameraMode.eDriver);
         Limelight.setLedMode(LightMode.eOff);
 
         //TODO: figure out how to do this
-        Trajectory left_trajectory = PathfinderFRC.getTrajectory(auton_path + ".left");
-        Trajectory right_trajectory = PathfinderFRC.getTrajectory(auton_path + ".right");
+
+        try{
+            left_trajectory = PathfinderFRC.getTrajectory("FrontRightHatch.left");
+            right_trajectory = PathfinderFRC.getTrajectory("FrontRightHatch.right");
+        }catch(Exception e){
+            e.printStackTrace();
+            System.exit(1);
+        }
 
         m_left_follower = new EncoderFollower(left_trajectory);
         m_right_follower = new EncoderFollower(right_trajectory);
