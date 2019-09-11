@@ -40,7 +40,7 @@ public class Robot extends TimedRobot {
     public static HatchManip hatchManip;
     public static Drivetrain drivetrain;
     public static Elevator elevator;
-    public static HotMess hotMess;
+    //public static HotMess hotMess;
     public static OI oi;
     public static Limelight limelight;
     public static WideIntake wideintake;
@@ -57,7 +57,7 @@ public class Robot extends TimedRobot {
         sideouttake = new SideOuttake();
         hatchManip = new HatchManip();
         drivetrain = new Drivetrain();
-        hotMess = new HotMess();
+        //hotMess = new HotMess();
         limelight = new Limelight();
         elevator = new Elevator();
         wideintake = new WideIntake();
@@ -103,7 +103,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         sideouttake.update();
-        //drivetrain.updateDrivetrain();
+        drivetrain.updateDrivetrain();
         //hatchManip.updateHatch();
         elevator.update();
         //hotMess.update();
@@ -138,6 +138,7 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         Limelight.setCameraMode(CameraMode.eDriver);
         Limelight.setLedMode(LightMode.eOff);
+
     }
 
     /**

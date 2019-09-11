@@ -15,6 +15,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
@@ -23,7 +24,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.SPI;
-
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.robot.RobotMap;
 import frc.robot.commands.DriveControl;
 
@@ -70,6 +71,8 @@ public class Drivetrain extends Subsystem {
 
     public double rampRate = .4;
 
+    public DoubleSolenoid shiftingSolenoid;
+
     public Drivetrain() {
         
         navx = new AHRS(SPI.Port.kMXP);
@@ -99,6 +102,8 @@ public class Drivetrain extends Subsystem {
 
         straightModeStart = false;
         straightModeRun = false;
+
+        shiftingSolenoid = new DoubleSolenoid(RobotMap.PCM.SHIFT_GEAR_1, RobotMap.PCM.SHIFT_GEAR_2);
 
         runDelay = System.currentTimeMillis();
         
@@ -171,13 +176,15 @@ public class Drivetrain extends Subsystem {
     }
 
     public void updateDrivetrain() {
+    
+        SmartDashboar.putBoolean("Shift solonoid staus", shiftingSolenoid.get == Value.kForward);
         //SmartDashboard.putNumber("WheelRPM Left", wheelRPM(LEFT_FRONT));
         //SmartDashboard.putNumber("WheelRPM Right", wheelRPM(RIGHT_FRONT));
         //SmartDashboard.putBoolean("Is High Gear", isClimbUp());
         //SmartDashboard.putBoolean("Is Low Gear", isClimbDown());
-        SmartDashboard.putNumber("Encoder Left", getEncoder(LEFT_FRONT));
-        SmartDashboard.putNumber("Encoder Right", getEncoder(RIGHT_FRONT));
-        SmartDashboard.putNumber("Drivetrain Angle", navx.getYaw());
+        // SmartDashboard.putNumber("Encoder Left", getEncoder(LEFT_FRONT));
+        // SmartDashboard.putNumber("Encoder Right", getEncoder(RIGHT_FRONT));
+        // SmartDashboard.putNumber("Drivetrain Angle", navx.getYaw());
     }
 
     public double getVoltage(int n) {
@@ -218,6 +225,21 @@ public class Drivetrain extends Subsystem {
         limelightPID.enable();
         tankDrive(speed - limelightPIDOutput, speed + limelightPIDOutput);
     }
+
+    public void shiftGears() {
+      
+        if (isHighGear()) {
+            shiftingSolenoid.set(Value.kReverse);
+            SmartDashboard.putBoolean("Reached low Gear Shift Method", true);
+        } else {
+            shiftingSolenoid.set(Value.kForward);
+            SmartDashboard.putBoolean("Reached high Gear Shift Method", true);
+        }
+    }
+
+    public boolean isHighGear() {
+        return shiftingSolenoid.get() == Value.kForward;
+    }
     
 
     /*
@@ -253,6 +275,8 @@ public class Drivetrain extends Subsystem {
         drive(0, 0);
     }
 
+
+
     @Override
     public void initDefaultCommand() {
         setDefaultCommand(new DriveControl());
@@ -262,3 +286,4 @@ public class Drivetrain extends Subsystem {
         return navx.getAngle();
     }
 }
+//yeet

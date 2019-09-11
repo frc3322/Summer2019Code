@@ -52,8 +52,8 @@ public class RobotMap {
 
         public static final int SHIFT_GEAR_1 = 4;
         public static final int SHIFT_GEAR_2 = 5;
-        public static final int HOT_MESS_1 = 4;
-        public static final int HOT_MESS_2 = 5;
+        // public static final int HOT_MESS_1 = 4;
+        // public static final int HOT_MESS_2 = 5;
         public static final int LOWER_MECHANISM = 0; //TODO: check IDs
         public static final int RAISE_MECHANSIM = 1;
         public static final int GRAB_HATCH = 2;

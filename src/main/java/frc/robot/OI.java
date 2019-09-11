@@ -54,7 +54,8 @@ public class OI {
         right_stick.whenPressed(new LimelightAlign());
         right_stick.whenReleased(new LimelightStop());
         bumper_left_lower.whileHeld(new AutoOuttake());
-        left_stick.whenPressed(new ToggleHotmess());
+        left_stick.whenPressed(new ShiftGears());
+        //left_stick.whenPressed(new ToggleHotmess());
         //button_a_lower.whenPressed(new TurnToAngle());
 
 
