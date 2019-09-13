@@ -177,7 +177,7 @@ public class Drivetrain extends Subsystem {
 
     public void updateDrivetrain() {
     
-        SmartDashboar.putBoolean("Shift solonoid staus", shiftingSolenoid.get == Value.kForward);
+        SmartDashboard.putBoolean("Shift solonoid staus", shiftingSolenoid.get() == Value.kForward);
         //SmartDashboard.putNumber("WheelRPM Left", wheelRPM(LEFT_FRONT));
         //SmartDashboard.putNumber("WheelRPM Right", wheelRPM(RIGHT_FRONT));
         //SmartDashboard.putBoolean("Is High Gear", isClimbUp());
