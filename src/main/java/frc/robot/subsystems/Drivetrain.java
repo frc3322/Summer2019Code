@@ -42,10 +42,10 @@ public class Drivetrain extends Subsystem {
                       RIGHT_BACK = 2,
                       RIGHT_FRONT = 3;
                     
-    double previousThrottle = 0,
-            previousTurn = 0,
-            maxTurnDelta = .05,
-            maxThrottleDelta = .05;
+    private double previousThrottle = 0,
+                   previousTurn = 0,
+                   maxTurnDelta = .05,
+                   maxThrottleDelta = .05;
 
     public AHRS navx;
 

@@ -16,9 +16,9 @@ import static frc.robot.Robot.elevator;
 
 public class ElevatorControl extends Command {
 
-    public int cycleCounter;
-    public boolean hasSeenSwitch;
-    public double idleSpeed;
+    private int cycleCounter;
+    private boolean hasSeenSwitch;
+    private double idleSpeed;
 
 	public ElevatorControl(){
         requires(elevator);

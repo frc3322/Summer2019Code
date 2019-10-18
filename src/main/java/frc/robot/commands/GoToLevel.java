@@ -16,7 +16,7 @@ import static frc.robot.Robot.elevator;
 
 public class GoToLevel extends Command{
 
-    public int level;
+    private int level;
 
     public GoToLevel(int level) {
         requires(elevator);
