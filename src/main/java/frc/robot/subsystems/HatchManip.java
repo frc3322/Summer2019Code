@@ -19,8 +19,8 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
  */
 public class HatchManip extends Subsystem {
 
-    DoubleSolenoid hatchGrabber = new DoubleSolenoid(RobotMap.PCM.PCM_ID, RobotMap.PCM.GRAB_HATCH, RobotMap.PCM.RELEASE_HATCH);
-    DoubleSolenoid grabberExtender = new DoubleSolenoid(RobotMap.PCM.PCM_ID, RobotMap.PCM.LOWER_MECHANISM, RobotMap.PCM.RAISE_MECHANSIM);
+    private DoubleSolenoid hatchGrabber = new DoubleSolenoid(RobotMap.PCM.PCM_ID, RobotMap.PCM.GRAB_HATCH, RobotMap.PCM.RELEASE_HATCH);
+    private DoubleSolenoid grabberExtender = new DoubleSolenoid(RobotMap.PCM.PCM_ID, RobotMap.PCM.LOWER_MECHANISM, RobotMap.PCM.RAISE_MECHANSIM);
 
     public void updateHatch() {
         //SmartDashboard.putBoolean("hatchGrabberActivated", !hatchGrabberActivated());
