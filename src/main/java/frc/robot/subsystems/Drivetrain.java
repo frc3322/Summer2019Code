@@ -228,6 +228,16 @@ public class Drivetrain extends Subsystem {
         tankDrive(speed - limelightPIDOutput, speed + limelightPIDOutput);
     }
     
+    public void resetNavX(){
+        navx.reset();
+    }
+
+    public void resetDrivetrainEncoders(){
+        encoders[LEFT_FRONT].setPosition(0);
+        encoders[RIGHT_FRONT].setPosition(0);
+        encoders[LEFT_BACK].setPosition(0);
+        encoders[RIGHT_BACK].setPosition(0);
+    }
 
     /*
 

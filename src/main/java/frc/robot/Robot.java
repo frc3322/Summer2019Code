@@ -65,8 +65,8 @@ public class Robot extends TimedRobot {
     private static final double k_max_velocity = 12;
 
     //TODO: temp values
-    private static final int k_ticks_per_rev = 1024;
-    private static final double k_wheel_diameter = 4.0 / 12.0;
+    private static final int k_ticks_per_rev = 20;
+    private static final double k_wheel_diameter = 0.1524;
 
     //defines which motor is which for get_encoder method
     private final int LEFT_BACK = 0,
@@ -89,6 +89,7 @@ public class Robot extends TimedRobot {
         limelight = new Limelight();
         elevator = new Elevator();
         wideintake = new WideIntake();
+        
 //compressor = new Compressor(RobotMap.PCM.PCM_ID);
 
         //SmartDashboard.putNumber("Cargo Level Encoder Value", elevator.cargoLevel);
@@ -113,7 +114,8 @@ public class Robot extends TimedRobot {
 
         drivetrain.updateDrivetrain();
 
-        //drivetrain.navx.reset();
+        drivetrain.resetNavX();
+        drivetrain.resetDrivetrainEncoders();
 
         Limelight.setLedMode(Limelight.LightMode.eOff);
 
@@ -131,7 +133,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         sideouttake.update();
-        //drivetrain.updateDrivetrain();
+        drivetrain.updateDrivetrain();
         //hatchManip.updateHatch();
         elevator.update();
         //hotMess.update();
@@ -183,10 +185,11 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+        drivetrain.resetDrivetrainEncoders();
+        drivetrain.resetNavX();
+
         Limelight.setCameraMode(CameraMode.eDriver);
         Limelight.setLedMode(LightMode.eOff);
-
-        //TODO: figure out how to do this
 
         try{
             left_trajectory = PathfinderFRC.getTrajectory("FrontRightHatch.left");
@@ -201,11 +204,11 @@ public class Robot extends TimedRobot {
 
         m_left_follower.configureEncoder(drivetrain.getEncoderInt(LEFT_FRONT), k_ticks_per_rev, k_wheel_diameter);
         // You must tune the PID values on the following line!
-        m_left_follower.configurePIDVA(1.0, 0.0, 0.0, 1 / k_max_velocity, 0);
+        m_left_follower.configurePIDVA(2.0, 0.0, 0.0, 1 / k_max_velocity, 0);
 
         m_right_follower.configureEncoder(drivetrain.getEncoderInt(RIGHT_FRONT), k_ticks_per_rev, k_wheel_diameter);
         // You must tune the PID values on the following line!
-        m_right_follower.configurePIDVA(1.0, 0.0, 0.0, 1 / k_max_velocity, 0);
+        m_right_follower.configurePIDVA(2.0, 0.0, 0.0, 1 / k_max_velocity, 0);
         
         m_follower_notifier = new Notifier(this::followPath);
         m_follower_notifier.startPeriodic(left_trajectory.get(0).dt);
