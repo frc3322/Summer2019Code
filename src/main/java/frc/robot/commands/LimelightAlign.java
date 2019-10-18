@@ -32,8 +32,7 @@ public class LimelightAlign extends Command {
     protected void initialize(){
         Limelight.setLedMode(LightMode.eOn);
         Limelight.setCameraMode(CameraMode.eVision);
-        drivetrain.limelightPID.reset();
-        drivetrain.limeControlling = true;
+        drivetrain.enableLimePID();
     }
 
     @Override

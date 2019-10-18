@@ -108,7 +108,7 @@ public class Elevator extends PIDSubsystem {
     }
 
     public void adjustRampRate() {
-        drivetrain.rampRate = .4 + elevatorEncoder.getPosition() / 10000;
+        drivetrain.setRampRate(.4 + elevatorEncoder.getPosition() / 10000);
     }
 
     @Override

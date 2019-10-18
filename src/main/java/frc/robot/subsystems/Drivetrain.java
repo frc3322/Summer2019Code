@@ -47,11 +47,11 @@ public class Drivetrain extends Subsystem {
                    maxTurnDelta = .05,
                    maxThrottleDelta = .05;
 
-    public AHRS navx;
+    private AHRS navx;
 
-    public boolean shiftPause;
+    private boolean shiftPause;
 
-    public boolean isHatchFront = false;
+    private boolean isHatchFront = false;
 
     private CANSparkMax[] motors = new CANSparkMax[4];
 
@@ -63,15 +63,15 @@ public class Drivetrain extends Subsystem {
     private PIDController pidForDriveStraight;
     private double pidOutputForDriveStraight;
 
-    public PIDController limelightPID;
+    private PIDController limelightPID;
     private double limelightPIDOutput;
 
-    public boolean limeControlling = false;
-    public boolean outtakeControlling = false;
+    private boolean limeControlling = false;
+    private boolean outtakeControlling = false;
 
-    public double rampRate = .4;
+    private double rampRate = .4;
 
-    public DoubleSolenoid shiftingSolenoid;
+    private DoubleSolenoid shiftingSolenoid;
 
     public Drivetrain() {
         
@@ -86,7 +86,6 @@ public class Drivetrain extends Subsystem {
         encoders[LEFT_FRONT] = motors[LEFT_FRONT].getEncoder();
         encoders[RIGHT_BACK] = motors[RIGHT_BACK].getEncoder();
         encoders[RIGHT_FRONT] = motors[RIGHT_FRONT].getEncoder();
-
 
         robotDrive = new DifferentialDrive(motors[LEFT_FRONT], motors[RIGHT_FRONT]);
         motors[LEFT_BACK].follow(motors[LEFT_FRONT]);
@@ -172,7 +171,6 @@ public class Drivetrain extends Subsystem {
 		limelightPID.setOutputRange(-.4, .4);
 		limelightPID.setContinuous(true);
 
-        
     }
 
     public void updateDrivetrain() {
@@ -216,14 +214,13 @@ public class Drivetrain extends Subsystem {
         robotDrive.tankDrive(leftSpeed, rightSpeed);
     }
 
-
-    
     public void limeDrive(double speed) {
         
         navx.reset();
         limelightPID.setSetpoint(limelight.getTx());
         limelightPID.enable();
         tankDrive(speed - limelightPIDOutput, speed + limelightPIDOutput);
+
     }
 
     public void shiftGears() {
@@ -241,9 +238,7 @@ public class Drivetrain extends Subsystem {
         return shiftingSolenoid.get() == Value.kForward;
     }
     
-
     /*
-
     public void driveStraight(Double speed, double rotation){
         if(Math.abs(speed) > 0.15 && Math.abs(rotation) < 0.15){
             if (!straightModeStart) {
@@ -275,8 +270,6 @@ public class Drivetrain extends Subsystem {
         drive(0, 0);
     }
 
-
-
     @Override
     public void initDefaultCommand() {
         setDefaultCommand(new DriveControl());
@@ -285,5 +278,32 @@ public class Drivetrain extends Subsystem {
     public double getAngle(){
         return navx.getAngle();
     }
+
+    public void setRampRate(double rampRate){
+
+        this.rampRate = rampRate;
+
+    }
+
+    public boolean getLimeControlling(){ //pretty sure that there is a better name for this
+
+        return limeControlling;
+
+    }
+
+    public void enableLimePID(){
+
+        limelightPID.enable();
+        limeControlling = true;
+
+    }
+
+    public void disableLimePID(){
+
+        limelightPID.disable();
+        limeControlling = false;
+
+    }
+
 }
 //yeet

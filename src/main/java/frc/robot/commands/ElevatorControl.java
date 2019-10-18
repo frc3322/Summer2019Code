@@ -19,7 +19,7 @@ public class ElevatorControl extends Command {
     private int cycleCounter;
     private boolean hasSeenSwitch;
     private double idleSpeed;
-
+    
 	public ElevatorControl(){
         requires(elevator);
         hasSeenSwitch = false;

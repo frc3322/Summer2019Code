@@ -58,7 +58,7 @@ public class DriveControl extends Command {
         }
         
         
-        if(drivetrain.limeControlling) {
+        if(drivetrain.getLimeControlling()) {
             SmartDashboard.putBoolean("Limelight Controlling", true);
             drivetrain.limeDrive(speed); 
         } else {
