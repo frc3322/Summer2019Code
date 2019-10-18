@@ -35,22 +35,22 @@ public class Elevator extends PIDSubsystem {
     private int desiredLevel = 0;
     private double upSpeed = 0.2;
     private double downSpeed = -0.2;
-    public double cargoLevel = 0;
-    public double secondLevel = 0;
-    public static double P = 0.3;
-    public static double I = 0;
-    public static double D = 0;
-    public double speedModifier = .75;
-    public boolean canMoveUp = true;
-    public boolean canMoveDown = true;
-    public double moveInput;
-    public double pidSpeed;
-    CANEncoder elevatorEncoder;
+    private double cargoLevel = 0;
+    private double secondLevel = 0;
+    private static double P = 0.3;
+    private static double I = 0;
+    private static double D = 0;
+    private double speedModifier = .75;
+    private boolean canMoveUp = true;
+    private boolean canMoveDown = true;
+    private double moveInput;
+    private double pidSpeed;
+    private CANEncoder elevatorEncoder;
 
-    CANSparkMax elevatorMotor1;
-    CANSparkMax elevatorMotor2;
+    private CANSparkMax elevatorMotor1;
+    private CANSparkMax elevatorMotor2;
     
-    DigitalInput elevatorLimitSwitch;
+    private DigitalInput elevatorLimitSwitch;
 
     public Elevator() {
         super("Elevator PID", P, I, D);
@@ -85,8 +85,7 @@ public class Elevator extends PIDSubsystem {
         //SmartDashboard.putNumber("Elevator Motor Speed", elevatorMotor1.getBusVoltage());
 
         onLimitSwitch();
-        moveInput = (oi.getUpperChassis().getRawAxis(RobotMap.XBOX.TRIGGER_R_AXIS) - oi.getUpperChassis().getRawAxis(RobotMap.XBOX.TRIGGER_L_AXIS)) * speedModifier;
-        SmartDashboard.putNumber("elevator input", moveInput);
+        // SmartDashboard.putNumber("elevator input", moveInput);
     }
 
     public void reset() {
@@ -163,4 +162,10 @@ public class Elevator extends PIDSubsystem {
         elevator.pidWrite(output);
     }
 
+    public double getInput(){
+
+        moveInput = (oi.getUpperChassis().getRawAxis(RobotMap.XBOX.TRIGGER_R_AXIS) - oi.getUpperChassis().getRawAxis(RobotMap.XBOX.TRIGGER_L_AXIS)) * speedModifier;
+        return moveInput;
+
+    }
 }

@@ -40,10 +40,10 @@ public class ElevatorControl extends Command {
             cycleCounter = 0;
             elevator.move(0);
         //needs 200 encoder ticks to get off switch
-        } else if (elevator.moveInput == 0 && elevator.getPosition() > 0.5 && !elevator.getPIDController().isEnabled()){
+        } else if (elevator.getInput() == 0 && elevator.getPosition() > 0.5 && !elevator.getPIDController().isEnabled()){
             elevator.move(idleSpeed);
         } else {
-            elevator.move(elevator.moveInput*0.6);
+            elevator.move(elevator.getInput()*0.6);
         }
 
         //prevents limit switch bounce
@@ -57,7 +57,7 @@ public class ElevatorControl extends Command {
             cycleCounter = 1;
         }
 
-        if(elevator.moveInput < 0) {
+        if(elevator.getInput() < 0) {
             elevator.reset();
         }
 
