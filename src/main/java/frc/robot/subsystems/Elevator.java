@@ -85,7 +85,7 @@ public class Elevator extends PIDSubsystem {
         //SmartDashboard.putNumber("Elevator Motor Speed", elevatorMotor1.getBusVoltage());
 
         onLimitSwitch();
-        moveInput = (oi.upperChassis.getRawAxis(RobotMap.XBOX.TRIGGER_R_AXIS) - oi.upperChassis.getRawAxis(RobotMap.XBOX.TRIGGER_L_AXIS)) * speedModifier;
+        moveInput = (oi.getUpperChassis().getRawAxis(RobotMap.XBOX.TRIGGER_R_AXIS) - oi.getUpperChassis().getRawAxis(RobotMap.XBOX.TRIGGER_L_AXIS)) * speedModifier;
         SmartDashboard.putNumber("elevator input", moveInput);
     }
 
