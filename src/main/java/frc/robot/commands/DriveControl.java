@@ -28,6 +28,15 @@ public class DriveControl extends Command {
     private double turnDirection;
     private double turn;
 
+    private double y;
+    private double x;
+    private double sX;
+    private double sY;
+    private double s;
+    private double theta;
+    private double newX;
+    private double newY;
+
 
     public DriveControl() {
 
