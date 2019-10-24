@@ -40,7 +40,7 @@ public class DriveControl extends Command {
 
     @Override
     protected void execute() {
-        speed = oi.lowerChassis.getRawAxis(SPEED_AXIS);
+        speed = oi.getLowerChassis().getRawAxis(SPEED_AXIS);
         turnDirection = -1;
 
         if(speed > 0 || speed < 0) {
@@ -49,16 +49,16 @@ public class DriveControl extends Command {
             rotationModifier = 0.6;
         }
 
-        turn = (Math.pow(oi.lowerChassis.getRawAxis(ROTATION_AXIS), 2)) * rotationModifier;
+        turn = (Math.pow(oi.getLowerChassis().getRawAxis(ROTATION_AXIS), 2)) * rotationModifier;
 
-        if(oi.lowerChassis.getRawAxis(ROTATION_AXIS) < 0){
+        if(oi.getLowerChassis().getRawAxis(ROTATION_AXIS) < 0){
             turnDirection = 1;
         } else {
             turnDirection = -1;
         }
         
         
-        if(drivetrain.limeControlling) {
+        if(drivetrain.getLimeControlling()) {
             SmartDashboard.putBoolean("Limelight Controlling", true);
             drivetrain.limeDrive(speed); 
         } else {

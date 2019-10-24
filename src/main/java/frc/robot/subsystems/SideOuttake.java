@@ -23,13 +23,13 @@ public class SideOuttake extends Subsystem{
     private double slowSpeedModifier = 0.25;
     private double fastSpeedModifier = 0.55;
 
-    public static final long outtakeTime = 2000;
+    private static final long outtakeTime = 2000;
 
-    WPI_TalonSRX leftOuttake = new WPI_TalonSRX(RobotMap.CAN.L_SIDE_OUTTAKE);
-    WPI_TalonSRX rightOuttake = new WPI_TalonSRX(RobotMap.CAN.R_SIDE_OUTTAKE);
+    private WPI_TalonSRX leftOuttake = new WPI_TalonSRX(RobotMap.CAN.L_SIDE_OUTTAKE);
+    private WPI_TalonSRX rightOuttake = new WPI_TalonSRX(RobotMap.CAN.R_SIDE_OUTTAKE);
 
-    DigitalInput leftInfrared = new DigitalInput(RobotMap.DIO.LEFT_INFRARED);
-    DigitalInput rightInfrared = new DigitalInput(RobotMap.DIO.RIGHT_INFRARED);
+    private DigitalInput leftInfrared = new DigitalInput(RobotMap.DIO.LEFT_INFRARED);
+    private DigitalInput rightInfrared = new DigitalInput(RobotMap.DIO.RIGHT_INFRARED);
 
     @Override
     protected void initDefaultCommand() {

@@ -17,12 +17,12 @@ import frc.robot.subsystems.Limelight.CameraMode;
 import frc.robot.subsystems.Limelight.LightMode;
 
 public class LimelightStop extends Command{
+
     @Override
     protected void initialize() {
         Limelight.setLedMode(LightMode.eOff);
         Limelight.setCameraMode(CameraMode.eDriver);
-        drivetrain.limeControlling = false;
-        drivetrain.limelightPID.disable();
+        drivetrain.disableLimePID();
     }
     
     @Override

@@ -21,7 +21,7 @@ import static frc.robot.Robot.limelight;
 
 public class LimelightAlign extends Command {
 
-    double angleModifier = .05;
+    private double angleModifier = .05;
 
     public LimelightAlign() {
         requires(drivetrain);
@@ -32,8 +32,7 @@ public class LimelightAlign extends Command {
     protected void initialize(){
         Limelight.setLedMode(LightMode.eOn);
         Limelight.setCameraMode(CameraMode.eVision);
-        drivetrain.limelightPID.reset();
-        drivetrain.limeControlling = true;
+        drivetrain.enableLimePID();
     }
 
     @Override

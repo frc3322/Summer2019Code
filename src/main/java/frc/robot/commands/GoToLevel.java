@@ -16,7 +16,7 @@ import static frc.robot.Robot.elevator;
 
 public class GoToLevel extends Command{
 
-    public int level;
+    private int level;
 
     public GoToLevel(int level) {
         requires(elevator);
@@ -36,7 +36,7 @@ public class GoToLevel extends Command{
 
     @Override
     protected boolean isFinished() {
-        if(elevator.moveInput != 0 || elevator.onTarget()) {
+        if(elevator.getInput() != 0 || elevator.onTarget()) {
             return true;
         } else {
             return false;

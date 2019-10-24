@@ -22,8 +22,8 @@ public class OuttakeControl extends Command{
     private final int RIGHT_AXIS;
     private final int LEFT_AXIS;
 
-    public boolean outtaking;
-    public double lastOuttake;
+    private boolean outtaking;
+    private double lastOuttake;
 
     public OuttakeControl() {
         requires(sideouttake);
@@ -33,10 +33,10 @@ public class OuttakeControl extends Command{
 
     @Override
     protected void execute() {
-        if(oi.lowerChassis.getRawAxis(RIGHT_AXIS) > 0){
-            sideouttake.outtakeRight(Math.sqrt(oi.lowerChassis.getRawAxis(RIGHT_AXIS)));
-        } else if(oi.lowerChassis.getRawAxis(LEFT_AXIS) > 0){
-            sideouttake.outtakeLeft(Math.sqrt(oi.lowerChassis.getRawAxis(LEFT_AXIS)));
+        if(oi.getLowerChassis().getRawAxis(RIGHT_AXIS) > 0){
+            sideouttake.outtakeRight(Math.sqrt(oi.getLowerChassis().getRawAxis(RIGHT_AXIS)));
+        } else if(oi.getLowerChassis().getRawAxis(LEFT_AXIS) > 0){
+            sideouttake.outtakeLeft(Math.sqrt(oi.getLowerChassis().getRawAxis(LEFT_AXIS)));
         } else {
             sideouttake.outtakeStop();
         }
