@@ -24,8 +24,10 @@ public class DriveControl extends Command {
 
     private double rotationModifier;
 
-    private double speed;
     private double turnDirection;
+
+    private double speed;
+
     private double turn;
 
     private double y;
@@ -50,6 +52,7 @@ public class DriveControl extends Command {
     @Override
     protected void execute() {
         speed = oi.getLowerChassis().getRawAxis(SPEED_AXIS);
+        /*
         turnDirection = -1;
 
         if(speed > 0 || speed < 0) {
@@ -65,15 +68,38 @@ public class DriveControl extends Command {
         } else {
             turnDirection = -1;
         }
+        */
+
+        x = oi.getLowerChassis().getRawAxis(ROTATION_AXIS);
+        y = oi.getLowerChassis().getRawAxis(SPEED_AXIS);
         
-        
-        if(drivetrain.getLimeControlling()) {
+        theta = Math.atan(Math.abs(y)/Math.abs(x));
+
+        if (Math.abs(y) > Math.abs(x)) {
+            sY = 1;
+            sX = 1 / Math.tan(theta);
+            s = sX + sY;
+        } else if (Math.abs(x) > Math.abs(y)) {
+            sX = 1;
+            sY = Math.tan(theta);
+            s = sX + sY;
+        } else if (Math.abs(x) == Math.abs(y)) {
+            s = 2;
+        }
+
+        newX = x / s;
+        newY = y / s;
+
+        drivetrain.tankDrive(newX + newY, newY - newX);
+        /*
+        if(drivetrain.limeControlling) {
             SmartDashboard.putBoolean("Limelight Controlling", true);
             drivetrain.limeDrive(speed); 
         } else {
             SmartDashboard.putBoolean("Limelight Controlling", false);
             drivetrain.drive(speed, turnDirection * turn);
         }
+        */
         
         //drivetrain.drive(speed, turnDirection * turn);
     }
