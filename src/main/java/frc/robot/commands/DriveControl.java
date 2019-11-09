@@ -90,7 +90,7 @@ public class DriveControl extends Command {
         newX = x / s;
         newY = y / s;
 
-        drivetrain.tankDrive(newX + newY, newY - newX);
+        drivetrain.tankDrive(newY - newX, newY + newX);
         /*
         if(drivetrain.limeControlling) {
             SmartDashboard.putBoolean("Limelight Controlling", true);
