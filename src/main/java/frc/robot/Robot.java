@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.HatchManip;
@@ -65,7 +66,7 @@ public class Robot extends TimedRobot {
     private static final double k_max_velocity = 12;
 
     //TODO: temp values
-    private static final int k_ticks_per_rev = 20;
+    private static final int k_ticks_per_rev = 200;
     private static final double k_wheel_diameter = 0.1524;
 
     //defines which motor is which for get_encoder method
@@ -170,13 +171,16 @@ public class Robot extends TimedRobot {
             m_follower_notifier.stop();
         } else {
             double left_speed = m_left_follower.calculate(drivetrain.getEncoderInt(LEFT_FRONT));
-            double right_speed = m_right_follower.calculate(drivetrain.getEncoderInt(LEFT_FRONT));
+            double right_speed = m_right_follower.calculate(drivetrain.getEncoderInt(RIGHT_FRONT));
             double heading = drivetrain.getAngle();
             double desired_heading = Pathfinder.r2d(m_left_follower.getHeading());
             double heading_difference = Pathfinder.boundHalfDegrees(desired_heading - heading);
             double turn =  0.8 * (-1.0/80.0) * heading_difference;
 
-            drivetrain.tankDrive(left_speed + turn, right_speed - turn);
+            double left = left_speed + turn;
+            double right = right_speed - turn;
+
+            drivetrain.tankDrive(left, right);
         }
     }
 
@@ -204,11 +208,11 @@ public class Robot extends TimedRobot {
 
         m_left_follower.configureEncoder(drivetrain.getEncoderInt(LEFT_FRONT), k_ticks_per_rev, k_wheel_diameter);
         // You must tune the PID values on the following line!
-        m_left_follower.configurePIDVA(2.0, 0.0, 0.0, 1 / k_max_velocity, 0);
+        m_left_follower.configurePIDVA(1.0, 0.0, 0.0, 1 / k_max_velocity, 0);
 
         m_right_follower.configureEncoder(drivetrain.getEncoderInt(RIGHT_FRONT), k_ticks_per_rev, k_wheel_diameter);
         // You must tune the PID values on the following line!
-        m_right_follower.configurePIDVA(2.0, 0.0, 0.0, 1 / k_max_velocity, 0);
+        m_right_follower.configurePIDVA(1.0, 0.0, 0.0, 1 / k_max_velocity, 0);
         
         m_follower_notifier = new Notifier(this::followPath);
         m_follower_notifier.startPeriodic(left_trajectory.get(0).dt);
