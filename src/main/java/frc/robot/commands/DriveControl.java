@@ -38,6 +38,8 @@ public class DriveControl extends Command {
     private double theta;
     private double newX;
     private double newY;
+    private double driveLeft;
+    private double driveRight;
 
 
     public DriveControl() {
@@ -90,7 +92,29 @@ public class DriveControl extends Command {
         newX = x / s;
         newY = y / s;
 
-        drivetrain.tankDrive(newY - newX, newY + newX);
+        driveLeft = newY - newX;
+        driveRight = newY + newX;
+
+        SmartDashboard.putNumber("Controller X" , x);
+        SmartDashboard.putNumber("Controller Y", y);
+
+        if (Math.abs(x) < 0.05) {
+            double avgDrive = (driveLeft+driveRight)/2;
+            SmartDashboard.putNumber("Avg Drive Value", avgDrive);
+            SmartDashboard.putBoolean("Straight Drive?", true);
+
+            drivetrain.tankDrive(avgDrive, avgDrive);
+
+        } else {
+            drivetrain.tankDrive(driveLeft, driveRight);
+            SmartDashboard.putBoolean("Straight Drive?", false);
+
+        }
+
+        SmartDashboard.putNumber("Left Drive Amount", driveLeft);
+        SmartDashboard.putNumber("Right Drive Amount", driveRight);
+
+
         /*
         if(drivetrain.limeControlling) {
             SmartDashboard.putBoolean("Limelight Controlling", true);
